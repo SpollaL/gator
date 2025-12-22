@@ -1,16 +1,22 @@
 package main
 
 import (
+	"context"
 	"fmt"
 )
 
 func handlerLogin(s *state, cmd command) error {
-	if len(cmd.Args) == 1 {
+	if len(cmd.Args) != 1 {
 		return fmt.Errorf("Usage: %s <name>", cmd.Name)
 	}
 
 	userName := cmd.Args[0]
-	err := s.config.SetUser(userName)
+	_, err := s.db.GetUser(context.Background(), userName)
+	if err != nil {
+		return err
+	}
+
+	err = s.config.SetUser(userName)
 	if err != nil {
 		return err
 	}
