@@ -9,7 +9,7 @@ func TestConfigRead(t *testing.T) {
 	if err != nil {
 		t.Errorf("Reading config terminated with %s", err)
 	}
-	
+
 	if config.DbUrl != "postgres://example" {
 		t.Error("The Dburl should have been postgres://example")
 	}

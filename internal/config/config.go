@@ -15,7 +15,6 @@ type Config struct {
 const configFileName = ".gatorconfig.json"
 
 func Read() (Config, error) {
-
 	configFilePath, err := getConfigFilePath()
 	if err != nil {
 		return Config{}, err
@@ -40,7 +39,7 @@ func Read() (Config, error) {
 
 	return config, nil
 }
- 
+
 func getConfigFilePath() (string, error) {
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
@@ -62,7 +61,7 @@ func (config *Config) SetUser(userName string) error {
 		return err
 	}
 
-	err = os.WriteFile(configFilePath, configData, 0644)
+	err = os.WriteFile(configFilePath, configData, 0o644)
 	if err != nil {
 		return err
 	}
