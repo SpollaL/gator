@@ -21,7 +21,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("error reading config: %v", err)
 	}
-	fmt.Printf("Read config %+v\n", cfg)
+	fmt.Printf("Read config")
 
 	db, err := sql.Open("postgres", cfg.DbUrl)
 	if err != nil {
@@ -42,6 +42,8 @@ func main() {
 	commands.register("reset", handlerReset)
 	commands.register("users", handlerGetUsers)
 	commands.register("agg", handlerAgg)
+	commands.register("addfeed", handlerAddFeed)
+	commands.register("feeds", handlerFeeds)
 
 	args := os.Args
 	if len(args) < 2 {

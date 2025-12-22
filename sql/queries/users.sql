@@ -13,7 +13,7 @@ SELECT * from users
 WHERE name = $1;
 
 -- name: Reset :exec
-TRUNCATE TABLE users;
+DELETE FROM users;
 
 -- name: GetUsers :many
 SELECT name FROM users;
