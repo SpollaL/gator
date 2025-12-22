@@ -39,15 +39,14 @@ func main() {
 	}
 	commands.register("login", handlerLogin)
 	commands.register("register", handlerRegister)
+	commands.register("reset", handlerReset)
+	commands.register("users", handlerGetUsers)
 
 	args := os.Args
 	if len(args) < 2 {
 		log.Fatalf("Usage: cli <command> [args...]")
 	}
 	commandName := args[1]
-	if len(args) < 3 {
-		log.Fatalf("You have to specify at least one argument after the %s command", commandName)
-	}
 	commandArg := args[2:]
 	cmd := command{
 		Name: commandName,
@@ -58,7 +57,3 @@ func main() {
 		log.Fatalf("command %s exited with error: %v", cmd.Name, err)
 	}
 }
-
-
-
-
