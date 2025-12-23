@@ -1,4 +1,4 @@
-package feed
+package feedapi
 
 import (
 	"context"
@@ -41,7 +41,7 @@ func FetchFeed(ctx context.Context, feedUrl string) (RSSFeed, error) {
 
 func formatFeed(feed *RSSFeed) {
 	feed.Channel.Description = html.UnescapeString(feed.Channel.Description)
-	feed.Channel.Title = html.UnescapeString(feed.Channel.Description)
+	feed.Channel.Title = html.UnescapeString(feed.Channel.Title)
 	for i, item := range feed.Channel.Item {
 		item.Description = html.UnescapeString(item.Description)
 		item.Title = html.UnescapeString(item.Title)

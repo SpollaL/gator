@@ -1,4 +1,4 @@
-package feed
+package feedapi
 
 type RSSFeed struct {
 	Channel struct {
