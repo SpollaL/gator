@@ -9,31 +9,20 @@ import (
 	"github.com/spollaL/gator/internal/database"
 )
 
-
-func handlerAddFeed(s *state, cmd command) error {
-	if len(cmd.Args) != 2 {
-		return fmt.Errorf("usage: %s <name> <url>", cmd.Name)
+func handlerFollow(s *state, cmd command) error {
+	if len(cmd.Args) != 1 {
+		return fmt.Errorf("usage: %s <url>", cmd.Name)
 	}
 
-	feedName := cmd.Args[0]
 	user, err := s.db.GetUser(context.Background(), s.config.CurrentUserName)
 	if err != nil {
-		return fmt.Errorf("Could get current users info: %v", err)
+		return fmt.Errorf("couldn't get users %s", s.config.CurrentUserName)
 	}
 
-	feedUrl := cmd.Args[1] 
-	feedParams := database.CreateFeedParams{
-		ID: uuid.New(),
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
-		Name: feedName,
-		Url: feedUrl,
-		UserID: user.ID,
-	}
-
-	feed, err := s.db.CreateFeed(context.Background(), feedParams)
+	url := cmd.Args[0]
+	feed, err := s.db.GetFeedByUrl(context.Background(), url)
 	if err != nil {
-		return fmt.Errorf("couldn't created feed: %v", err)
+		return fmt.Errorf("couldn't get the feed for %s: %v", url, err)
 	}
 
 	feedFollowParams := database.CreateFeedFollowParams{
@@ -43,12 +32,11 @@ func handlerAddFeed(s *state, cmd command) error {
 		UserID:    user.ID,
 		FeedID:    feed.ID,
 	}
-
 	_, err = s.db.CreateFeedFollow(context.Background(), feedFollowParams)
 	if err != nil {
 		return fmt.Errorf("couldn't create feed_follows entry: %v", err)
 	}
-	
-	fmt.Printf("Successfully added feed %s\n", feedUrl)
+
+	fmt.Printf("user %s successfully follows %s\n", user.Name, feed.Name)
 	return nil
 }
